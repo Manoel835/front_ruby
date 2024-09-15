@@ -1,99 +1,258 @@
 /* Set the background color of the entire page */
 body {
-  background-color: #1a1f2b; /* Dark background */
-  justify-content: center;
+	background-color: #1a1f2b; /* Dark background */
+	justify-content: center;
 }
 
 .box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #1a1f2b; /* Match the dark background */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #1a1f2b; /* Match the dark background */
+}
+
+.calendar-container {
+	padding: 20px;
+	border-radius: 8px;
+	/* Se preferir usar uma imagem de fundo: */
+	/* background-image: url('path-to-your-image.jpg'); */
+	/* background-size: cover; */
+}
+
+.todo-section form {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.todo-section input {
+	flex: 1;
+	padding: 5px;
+}
+
+.todo-section button {
+	padding: 5px 10px;
+}
+
+.selected-day {
+	border: 2px solid #3f51b5;
+}
+
+.day-with-tasks {
+	background-color: #ffeb3b;
+}
+
+.calendar-day {
+	cursor: pointer;
+}
+
+/* Estilos para o modal */
+/* Estilos para o overlay */
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+select {
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px; /* Arredondar bordas dos inputs */
+	font-size: 16px;
+}
+
+/* Estilos para o modal */
+.modal {
+	background-color: #0F26A4;
+	padding: 30px;
+	max-width: 500px;
+	width: 90%;
+	border-radius: 12px; /* Aumenta o arredondamento das bordas */
+	outline: none;
+	position: relative;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Adiciona sombra ao modal */
+}
+
+/* Estilos para o título do modal */
+.modal h2 {
+	margin-top: 0;
+	margin-bottom: 20px;
+	font-size: 24px;
+	text-align: center;
+}
+
+/* Estilos para o formulário */
+.modal form {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Estilos para inputs */
+.modal input[type='text'],
+.modal select {
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px; /* Arredondar bordas dos inputs */
+	font-size: 16px;
+}
+
+/* Estilos para os botões */
+.modal-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.modal-buttons button {
+	flex: 1;
+	padding: 10px 15px;
+	margin: 0 5px;
+	font-size: 16px;
+	border: none;
+	border-radius: 8px; /* Arredondar bordas dos botões */
+	cursor: pointer;
+}
+
+.modal-buttons button[type='submit'] {
+	background-color: #28a745;
+	color: #ffffff;
+}
+
+.modal-buttons button[type='button'] {
+	background-color: #6c757d;
+	color: #ffffff;
+}
+
+/* Estilo para o botão "Criar Lista" */
+.modal-buttons button:last-child {
+	background-color: #007bff;
+	color: #ffffff;
+}
+
+/* Efeito hover nos botões */
+.modal-buttons button:hover {
+	opacity: 0.9;
+}
+
+.adicionar_tarefa {
+	background-color: #3f51b5;
+	color: white;
+	padding: 90px;
+	width: 6vw;
+	height: 6vh;
+	border-radius: 20px;
+	cursor: pointer;
+}
+.adiciona_criar {
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-around;
+}
+.modal-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.modal input,
+.modal select {
+	width: 100%;
+	padding: 8px;
+	margin-top: 10px;
 }
 
 .card {
-  display: flex;
-  background-color: #2e3445; /* Darker gray-blue for the card */
-  border-radius: 20px; /* Rounded corners */
-  box-shadow: 0 8px 16px rgba(131, 115, 115, 0.4);
-  padding: 20px;
-  color: white;
-  font-family: 'Arial', sans-serif;
-  width: 60vw;
-  height: 70vh;
+	display: flex;
+	background-color: #2e3445; /* Darker gray-blue for the card */
+	border-radius: 20px; /* Rounded corners */
+	box-shadow: 0 8px 16px rgba(131, 115, 115, 0.4);
+	padding: 20px;
+	color: white;
+	font-family: 'Arial', sans-serif;
+	width: 60vw;
+	height: 70vh;
 }
 
 .calendar-section,
 .todo-section {
-  flex: 1; /* Distribute space evenly */
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+	flex: 1; /* Distribute space evenly */
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
 }
 
 .todo-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  width: 100%; /* Make the to-do list take the full width of its container */
+	list-style: none;
+	padding: 0;
+	margin-top: 20px;
+	width: 100%; /* Make the to-do list take the full width of its container */
 }
 
 .todo-list li {
-  margin: 10px 0;
-  width: 100%;
-  padding: 10px;
-  background-color: #3a4a5a;
-  border-radius: 10px;
-  text-align: center;
+	margin: 10px 0;
+	width: 100%;
+	padding: 10px;
+	background-color: #3a4a5a;
+	border-radius: 10px;
+	text-align: center;
 }
 .calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
 }
 
 .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 5px;
 }
 
 .calendar-day-header {
-  font-weight: bold;
-  text-align: center;
+	font-weight: bold;
+	text-align: center;
 }
 
 .calendar-day {
-  background-color: #3a4a5a;
-  border-radius: 5px;
-  text-align: center;
-  padding: 10px;
-  color: white;
+	background-color: #3a4a5a;
+	border-radius: 5px;
+	text-align: center;
+	padding: 10px;
+	color: white;
 }
 
 .todo-section {
-  width: 100%;
+	width: 100%;
 }
 
 .todo-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 30%
+	list-style: none;
+	padding: 0;
+	margin-top: 30%;
 }
 
 .todo-list li {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #3a4a5a;
-  border-radius: 10px;
-  text-align: center;
+	margin: 10px 0;
+	padding: 10px;
+	background-color: #3a4a5a;
+	border-radius: 10px;
+	text-align: center;
 }
 
 /* Add this to your App.css */
 .highlighted-day {
-  background-color: #add8e6; /* Light blue color */
-  border-radius: 50%; /* Make it circular */
-  color: black; /* Change text color for better visibility */
-  font-weight: bold; /* Make the text bold */
+	background-color: #add8e6; /* Light blue color */
+	border-radius: 50%; /* Make it circular */
+	color: black; /* Change text color for better visibility */
+	font-weight: bold; /* Make the text bold */
 }

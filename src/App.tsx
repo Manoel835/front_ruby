@@ -27,8 +27,8 @@ function App() {
 		currentMonth === today.getMonth() && currentYear === today.getFullYear();
 
 	// Estados para as listas e tarefas
-	const [lists, setLists] = useState([]);
-	const [selectedListId, setSelectedListId] = useState(null);
+	const [lists, setLists] = useState<Array<{ id: number; name: string }>>([]);
+	const [selectedListId, setSelectedListId] = useState<number | null>(null);
 	const [newListName, setNewListName] = useState('');
 
 	interface Task {

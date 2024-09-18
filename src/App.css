@@ -1,6 +1,6 @@
 /* Set the background color of the entire page */
 body {
-	background-color: #1a1f2b; /* Dark background */
+	background-color: #ffeeca; /* Dark background */
 	justify-content: center;
 }
 
@@ -8,7 +8,41 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #1a1f2b; /* Match the dark background */
+}
+
+.todo-list-item {
+	background-color: #655e4e;
+	padding: 10px;
+	border-radius: 10px;
+	margin: 10px 0;
+	text-align: center;
+	transition: background-color 0.3s ease; /* Suaviza a mudança de cor ao clicar */
+}
+
+.todo-list-item:hover {
+	background-color: #4d4637; /* Cor um pouco mais escura ao passar o mouse */
+}
+/* Estilo para o botão "Criar Lista" */
+.criar-lista-btn {
+	background-color: #649b92; /* Cor desejada */
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	margin: 0 5px;
+}
+/* Estilo para tarefas concluídas */
+.completed-task {
+	background-color: rgba(77, 70, 55, 0.5); /* Cor opaca */
+	text-decoration: line-through; /* Adicionar linha para indicar conclusão */
+	color: #c0c0c0; /* Mudar a cor do texto para um tom opaco */
+}
+
+/* Efeito hover para o botão "Criar Lista" */
+.criar-lista-btn:hover {
+	background-color: #538b7e; /* Cor um pouco mais escura para o hover */
 }
 
 .calendar-container {
@@ -34,11 +68,11 @@ body {
 }
 
 .selected-day {
-	border: 2px solid #3f51b5;
+	border: 2px solid #c6b694;
 }
 
 .day-with-tasks {
-	background-color: #ffeb3b;
+	background-color: #ac8e18;
 }
 
 .calendar-day {
@@ -62,14 +96,15 @@ body {
 select {
 	padding: 10px;
 	margin-bottom: 15px;
-	border: 1px solid #ccc;
+	border: 1px solid #ffeeca;
 	border-radius: 8px; /* Arredondar bordas dos inputs */
 	font-size: 16px;
+	background-color: #655e4e;
 }
 
 /* Estilos para o modal */
 .modal {
-	background-color: #0F26A4;
+	background-color: #c6b694;
 	padding: 30px;
 	max-width: 500px;
 	width: 90%;
@@ -98,9 +133,10 @@ select {
 .modal select {
 	padding: 10px;
 	margin-bottom: 15px;
-	border: 1px solid #ccc;
 	border-radius: 8px; /* Arredondar bordas dos inputs */
 	font-size: 16px;
+	background-color: #655e4e;
+	border: 1px solid #ffeeca;
 }
 
 /* Estilos para os botões */
@@ -121,7 +157,7 @@ select {
 }
 
 .modal-buttons button[type='submit'] {
-	background-color: #28a745;
+	background-color: #005b4d;
 	color: #ffffff;
 }
 
@@ -132,7 +168,7 @@ select {
 
 /* Estilo para o botão "Criar Lista" */
 .modal-buttons button:last-child {
-	background-color: #007bff;
+	background-color: #649b92;
 	color: #ffffff;
 }
 
@@ -142,13 +178,37 @@ select {
 }
 
 .adicionar_tarefa {
-	background-color: #3f51b5;
+	background-color: #005b4d;
 	color: white;
 	padding: 90px;
 	width: 6vw;
 	height: 6vh;
-	border-radius: 20px;
 	cursor: pointer;
+}
+.calendar-button {
+	background-color: #655e4e; /* Cor da paleta */
+	color: white;
+	width: 4vw;
+	height: 5vh;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	margin: 0 5px;
+}
+
+/* Efeito hover para os botões do calendário */
+.calendar-button:hover {
+	background-color: #4d4637; /* Cor mais escura para o hover */
+}
+
+/* Estilo para o mês em maiúsculas */
+.calendar-month {
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: white;
 }
 .adiciona_criar {
 	padding: 10px;
@@ -172,7 +232,7 @@ select {
 
 .card {
 	display: flex;
-	background-color: #2e3445; /* Darker gray-blue for the card */
+	background-color: #c6b694; /* Darker gray-blue for the card */
 	border-radius: 20px; /* Rounded corners */
 	box-shadow: 0 8px 16px rgba(131, 115, 115, 0.4);
 	padding: 20px;
@@ -201,7 +261,7 @@ select {
 	margin: 10px 0;
 	width: 100%;
 	padding: 10px;
-	background-color: #3a4a5a;
+	background-color: #655e4e;
 	border-radius: 10px;
 	text-align: center;
 }
@@ -224,7 +284,6 @@ select {
 }
 
 .calendar-day {
-	background-color: #3a4a5a;
 	border-radius: 5px;
 	text-align: center;
 	padding: 10px;
@@ -240,18 +299,30 @@ select {
 	padding: 0;
 	margin-top: 30%;
 }
+.excluir-lista-btn {
+	background-color: #d9534f; /* Cor vermelha */
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
 
+/* Efeito hover no botão "Excluir Lista" */
+.excluir-lista-btn:hover {
+	background-color: #c9302c; /* Cor vermelha mais escura no hover */
+}
 .todo-list li {
 	margin: 10px 0;
 	padding: 10px;
-	background-color: #3a4a5a;
+	background-color: #4d4637;
 	border-radius: 10px;
 	text-align: center;
 }
 
 /* Add this to your App.css */
 .highlighted-day {
-	background-color: #add8e6; /* Light blue color */
+	background-color: #b3aa99;
 	border-radius: 50%; /* Make it circular */
 	color: black; /* Change text color for better visibility */
 	font-weight: bold; /* Make the text bold */

@@ -17,8 +17,8 @@ const getFirstDayOfMonth = (month: any, year: any) => {
 };
 
 // const API_URL = 'http://3.21.242.168:80';
-// const localAPI = 'http://18.191.214.191:3000';
-const localAPI = 'http://localhost:3000';
+const localAPI = 'http://13.59.231.23:3000';
+// const localAPI = 'http://localhost:3000';
 
 function App() {
 	// Estados para o calendário

@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactModal from 'react-modal';
-import { FaEdit, FaTrash } from 'react-icons/fa'; // Importar ícones de edição e lixeira
+import { FaEdit, FaTrash, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 
 // Inicializar o modal
 ReactModal.setAppElement('#root'); // Certifique-se de que corresponde ao ID do elemento raiz no seu index.html
@@ -17,13 +17,32 @@ const getFirstDayOfMonth = (month: any, year: any) => {
 };
 
 // const API_URL = 'http://3.21.242.168:80';
-// const localAPI = 'http://3.22.116.87:3000';
+// const localAPI = 'http://18.191.214.191:3000';
 const localAPI = 'http://localhost:3000';
 
 function App() {
 	// Estados para o calendário
 	const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 	const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 5;
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+
+	const handleNextPage = () => {
+		if (currentPage < Math.ceil(todoItems.length / itemsPerPage)) {
+			setCurrentPage(currentPage + 1);
+		}
+	};
+
+	const handlePreviousPage = () => {
+		if (currentPage > 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+
 
 	const daysOfWeek = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -43,7 +62,9 @@ function App() {
 	};
 
 	// Função para editar a tarefa (abre o modal e permite editar)
-	const [selectedListIdForTask, setSelectedListIdForTask] = useState<number | null>(null);
+	const [selectedListIdForTask, setSelectedListIdForTask] = useState<
+		number | null
+	>(null);
 
 	// Função para editar a tarefa (abre o modal e permite editar)
 	const handleEditTask = (task: Task) => {
@@ -71,17 +92,16 @@ function App() {
 			);
 
 			// Atualiza as listas de tarefas após a edição
-			const updatedItems = todoItems.map((item) =>
-				item.id === selectedTaskToEdit.id ? response.data : item
-			);
-			setTodoItems(updatedItems);
+			setTodoItems(
+				todoItems.filter((item) => item.id !== selectedTaskToEdit.id)
+			); // Remove o item da lista antiga
+			setAllTasks(allTasks.filter((task) => task.id !== selectedTaskToEdit.id)); // Remove da lista antiga globalmente
 
-			// Remover a tarefa da lista anterior e adicionar na nova lista
-			setAllTasks(
-				allTasks
-					.filter((task) => task.id !== selectedTaskToEdit.id) // Remove da lista antiga
-					.concat(response.data) // Adiciona à nova lista
-			);
+			// Adiciona o item atualizado à nova lista
+			if (selectedListIdForTask === selectedListId) {
+				setTodoItems([...todoItems, response.data]);
+			}
+			setAllTasks([...allTasks, response.data]);
 
 			setIsTaskModalOpen(false);
 			setNewTask('');
@@ -89,7 +109,6 @@ function App() {
 			console.error('Erro ao editar tarefa:', error);
 		}
 	};
-
 
 	// Adicione o estado para a tarefa que está sendo editada
 	const [selectedTaskToEdit, setSelectedTaskToEdit] = useState<Task | null>(
@@ -135,36 +154,36 @@ function App() {
 
 	// Função para excluir uma lista
 	const handleDeleteList = async (listId: number) => {
-	  try {
-		await axios.delete(`${localAPI}/lists/${listId}`);
-		// Atualiza a lista de listas após a exclusão
-		const updatedLists = lists.filter((list) => list.id !== listId);
-		setLists(updatedLists);
+		try {
+			await axios.delete(`${localAPI}/lists/${listId}`);
+			// Atualiza a lista de listas após a exclusão
+			const updatedLists = lists.filter((list) => list.id !== listId);
+			setLists(updatedLists);
 
-		// Se a lista selecionada foi excluída, atualiza a seleção
-		if (selectedListId === listId) {
-		  setSelectedListId(updatedLists.length > 0 ? updatedLists[0].id : null);
+			// Se a lista selecionada foi excluída, atualiza a seleção
+			if (selectedListId === listId) {
+				setSelectedListId(updatedLists.length > 0 ? updatedLists[0].id : null);
+			}
+		} catch (error) {
+			console.error('Erro ao excluir lista:', error);
 		}
-	  } catch (error) {
-		console.error('Erro ao excluir lista:', error);
-	  }
 	};
 
 	// Carregar listas existentes
 	useEffect(() => {
-	  const fetchLists = async () => {
-		try {
-		  const response = await axios.get(`${localAPI}/lists`);
-		  setLists(response.data);
-		  if (response.data.length > 0) {
-			setSelectedListId(response.data[0].id);
-		  }
-		} catch (error) {
-		  console.error('Erro ao carregar listas:', error);
-		}
-	  };
+		const fetchLists = async () => {
+			try {
+				const response = await axios.get(`${localAPI}/lists`);
+				setLists(response.data);
+				if (response.data.length > 0) {
+					setSelectedListId(response.data[0].id);
+				}
+			} catch (error) {
+				console.error('Erro ao carregar listas:', error);
+			}
+		};
 
-	  fetchLists();
+		fetchLists();
 	}, []);
 
 	// Função para gerar os dias do calendário com indicação de tarefas
@@ -215,7 +234,7 @@ function App() {
 		const fetchTasks = async () => {
 			try {
 				if (selectedListId) {
-					const formattedDate = selectedDate.toISOString().split('T')[0];
+					const formattedDate = selectedDate.toLocaleDateString('en-CA'); // Formato YYYY-MM-DD
 					const response = await axios.get(
 						`${localAPI}/lists/${selectedListId}/items/by_date/${formattedDate}`
 					);
@@ -259,13 +278,15 @@ function App() {
 	}, [currentMonth, currentYear, selectedListId]);
 
 	// Adicionar nova tarefa
+	// Adicionar nova tarefa
 	const handleAddTask = async (e: any) => {
 		e.preventDefault();
-		if (newTask.trim() !== '' && selectedListId) {
+		if (newTask.trim() !== '' && selectedListIdForTask) {
 			try {
-				const formattedDate = selectedDate.toISOString().split('T')[0];
+				// Ajuste para evitar problema de fuso horário
+				const formattedDate = selectedDate.toLocaleDateString('en-CA'); // Formato YYYY-MM-DD
 				const response = await axios.post(
-					`${localAPI}/lists/${selectedListId}/items`,
+					`${localAPI}/lists/${selectedListIdForTask}/items`, // Use selectedListIdForTask aqui
 					{
 						item: {
 							description: newTask.trim(),
@@ -274,7 +295,10 @@ function App() {
 						},
 					}
 				);
-				setTodoItems([...todoItems, response.data]);
+				// Verifique se a nova tarefa pertence à lista atualmente selecionada
+				if (selectedListIdForTask === selectedListId) {
+					setTodoItems([...todoItems, response.data]);
+				}
 				setAllTasks([...allTasks, response.data]);
 				setNewTask('');
 				setIsTaskModalOpen(false);
@@ -325,22 +349,27 @@ function App() {
 			}
 		}
 	};
-
+	const currentItems = todoItems.slice(indexOfFirstItem, indexOfLastItem);
 	return (
-
 		<div className='box'>
 			<div className='card'>
 				<div className='calendar-section calendar-container'>
 					<h1 className='calendar-title'>CALENDÁRIO</h1>
 					<div className='calendar-header'>
-						<button className='calendar-button' onClick={handlePreviousMonth}>{'<'}</button>
+						<button className='calendar-button' onClick={handlePreviousMonth}>
+							{'<'}
+						</button>
 						<span className='calendar-month'>
-							{new Date(currentYear, currentMonth).toLocaleString('default', {
-								month: 'long',
-							}).toUpperCase()}{' '}
+							{new Date(currentYear, currentMonth)
+								.toLocaleString('default', {
+									month: 'long',
+								})
+								.toUpperCase()}{' '}
 							{currentYear}
 						</span>
-						<button className='calendar-button' onClick={handleNextMonth}>{'>'}</button>
+						<button className='calendar-button' onClick={handleNextMonth}>
+							{'>'}
+						</button>
 					</div>
 
 					<div className='calendar-grid'>
@@ -389,7 +418,9 @@ function App() {
 							onClick={() => setIsTaskModalOpen(true)}>
 							Adicionar Tarefa
 						</button>
-						<button className='criar-lista-btn' onClick={() => setIsListModalOpen(true)}>
+						<button
+							className='criar-lista-btn'
+							onClick={() => setIsListModalOpen(true)}>
 							Criar Lista
 						</button>
 
@@ -412,39 +443,43 @@ function App() {
 					</select>
 
 					<ul className='todo-list'>
-    {todoItems.map((item, index) => (
-        <li
-            key={index}
-            onClick={() => toggleComplete(item, index)}
-            className={`todo-list-item ${item.completed ? 'completed-task' : ''}`}
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer', // Adiciona o cursor para indicar que é clicável
-            }}>
-            <span
-                style={{
-                    flex: 1, // Ocupa o espaço restante
-                }}>
-                {item.description}
-            </span>
-            <FaEdit
-                style={{ marginLeft: '10px', cursor: 'pointer' }}
-                onClick={(e) => {
-                    e.stopPropagation(); // Impede que o clique no ícone de edição marque a tarefa como concluída
-                    handleEditTask(item);
-                }}
-            />
-            <FaTrash
-                style={{ marginLeft: '10px', cursor: 'pointer' }}
-                onClick={(e) => {
-                    e.stopPropagation(); // Impede que o clique no ícone de exclusão marque a tarefa como concluída
-                    handleDeleteTask(item.id);
-                }}
-            />
-        </li>
-    ))}
-</ul>
+						{currentItems.map((item, index) => (
+							<li
+								key={index}
+								onClick={() => toggleComplete(item, index)}
+								className={`todo-list-item ${item.completed ? 'completed-task' : ''}`}
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									cursor: 'pointer',
+								}}>
+								<span style={{ flex: 1 }}>{item.description}</span>
+								<FaEdit
+									style={{ marginLeft: '10px', cursor: 'pointer' }}
+									onClick={(e) => {
+										e.stopPropagation();
+										handleEditTask(item);
+									}}
+								/>
+								<FaTrash
+									style={{ marginLeft: '10px', cursor: 'pointer' }}
+									onClick={(e) => {
+										e.stopPropagation();
+										handleDeleteTask(item.id);
+									}}
+								/>
+							</li>
+						))}
+					</ul>
+					<div className="pagination-buttons">
+					<button onClick={handlePreviousPage} disabled={currentPage === 1}>
+						<FaAngleDoubleLeft />
+					</button>
+					<span>Página {currentPage} de {Math.ceil(todoItems.length / itemsPerPage)}</span>
+					<button onClick={handleNextPage} disabled={currentPage === Math.ceil(todoItems.length / itemsPerPage)}>
+						 <FaAngleDoubleRight />
+					</button>
+				</div>
 
 
 				</div>
@@ -466,8 +501,9 @@ function App() {
 					/>
 					<select
 						value={selectedListIdForTask || ''}
-						onChange={(e) => setSelectedListIdForTask(parseInt(e.target.value))}
-					>
+						onChange={(e) =>
+							setSelectedListIdForTask(parseInt(e.target.value))
+						}>
 						<option value='' disabled>
 							Selecione uma Lista
 						</option>

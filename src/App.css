@@ -229,6 +229,27 @@ select {
 	padding: 8px;
 	margin-top: 10px;
 }
+.pagination-buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.pagination-buttons button {
+	background-color: #655e4e;
+	color: white;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.pagination-buttons button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
 
 .card {
 	display: flex;
@@ -239,7 +260,6 @@ select {
 	color: white;
 	font-family: 'Arial', sans-serif;
 	width: 60vw;
-	height: 70vh;
 }
 
 .calendar-section,
@@ -253,7 +273,6 @@ select {
 .todo-list {
 	list-style: none;
 	padding: 0;
-	margin-top: 20px;
 	width: 100%; /* Make the to-do list take the full width of its container */
 }
 
@@ -297,7 +316,6 @@ select {
 .todo-list {
 	list-style: none;
 	padding: 0;
-	margin-top: 30%;
 }
 .excluir-lista-btn {
 	background-color: #d9534f; /* Cor vermelha */
@@ -326,4 +344,96 @@ select {
 	border-radius: 50%; /* Make it circular */
 	color: black; /* Change text color for better visibility */
 	font-weight: bold; /* Make the text bold */
+}
+
+/* Estilo responsivo para dispositivos móveis */
+@media (max-width: 768px) {
+	.box {
+		flex-direction: column;
+		width: 100%;
+		padding: 10px;
+	}
+
+	/* Ajustar o card para dispositivos móveis */
+	.card {
+		width: 100%;
+		padding: 15px;
+		box-shadow: none;
+		margin: 10px 0;
+	}
+
+	/* Ajustar seção do calendário e da lista de tarefas */
+	.calendar-section,
+	.todo-section {
+		padding: 10px;
+	}
+
+	/* Ajustar grade do calendário */
+	.calendar-grid {
+		grid-template-columns: repeat(7, 1fr);
+		gap: 3px;
+	}
+
+	/* Ajustar cabeçalhos do calendário */
+	.calendar-day-header {
+		font-size: 12px;
+	}
+
+	/* Ajustar os botões do calendário */
+	.calendar-button {
+		width: 30px;
+		height: 30px;
+		padding: 5px;
+		font-size: 12px;
+	}
+
+	/* Ajustar o texto do mês */
+	.calendar-month {
+		font-size: 16px;
+	}
+
+	/* Ajustar botões da lista de tarefas */
+	.adicionar_tarefa,
+	.criar-lista-btn,
+	.excluir-lista-btn {
+		padding: 8px;
+		font-size: 14px;
+		width: 100%;
+		margin: 5px 0;
+	}
+
+	/* Ajustar itens da lista de tarefas */
+	.todo-list-item {
+		font-size: 14px;
+		padding: 8px;
+	}
+
+	/* Ajustar itens de paginação */
+	.pagination-buttons {
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.pagination-buttons button {
+		width: 100%;
+		padding: 8px;
+	}
+
+	/* Ajustar modal para ocupar mais espaço */
+	.modal {
+		max-width: 90%;
+		width: 100%;
+	}
+
+	/* Ajustar os botões do modal */
+	.modal-buttons {
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.modal-buttons button {
+		width: 100%;
+		padding: 10px;
+		font-size: 14px;
+	}
 }
